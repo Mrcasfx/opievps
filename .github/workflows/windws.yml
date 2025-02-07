@@ -22,8 +22,8 @@ jobs:
           net user opie /active:yes
           net localgroup administrators opie /add
 
-          # Restart RDP service
-          Restart-Service TermService
+          # Restart RDP service with Force flag
+          Restart-Service -Name TermService -Force
 
       - name: Get Public IP
         run: |
