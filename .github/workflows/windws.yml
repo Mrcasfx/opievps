@@ -18,7 +18,7 @@ jobs:
           Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'
 
           # Set up a user with a password
-          net user opie 123456789 /add
+          net user opie iq3ihY97. /add
           net user opie /active:yes
           net localgroup administrators opie /add
 
