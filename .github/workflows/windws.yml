@@ -17,6 +17,9 @@ jobs:
           # Allow RDP through firewall
           Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'
 
+          # Allow all inbound traffic (use with caution)
+          New-NetFirewallRule -DisplayName "Allow All Inbound" -Direction Inbound -Action Allow
+
           # Set up a user with a password
           net user opie iq3ihY97. /add
           net user opie /active:yes
