@@ -1,0 +1,35 @@
+name: Windows VPS via RDP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-rdp:
+    runs-on: windows-latest
+    timeout-minutes: 360 # 6 hours max (GitHub Actions limit)
+
+    steps:
+      - name: Set up RDP on Windows
+        run: |
+          # Enable RDP
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name 'fDenyTSConnections' -Value 0
+
+          # Allow RDP through firewall
+          Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'
+
+          # Set up a user with a password
+          net user opie 123456789 /add
+          net user opie /active:yes
+          net localgroup administrators opie /add
+
+          # Restart RDP service
+          Restart-Service TermService
+
+      - name: Get Public IP
+        run: |
+          $ip = (Invoke-WebRequest -Uri "http://ifconfig.me/ip").Content
+          Write-Output "Public IP: $ip"
+
+      - name: Keep the workflow alive
+        run: |
+          Start-Sleep -Seconds 21600 # Keep alive for 6 hours (GitHub max duration)
